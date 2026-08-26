@@ -5,8 +5,8 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 st.set_page_config(page_title="Netflix recommender",page_icon="🎬",layout="centered")
-st.title("🎬Find movies🎬")
-st.write("similar to your favourite!")
+st.title("🎬Find movies")
+st.write("**similar to your favourite!**")
 
 @st.cache_data
 def load_and_prep_data():
