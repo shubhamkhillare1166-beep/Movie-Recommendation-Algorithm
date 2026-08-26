@@ -5,8 +5,8 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 st.set_page_config(page_title="Netflix recommender",page_icon="🎬",layout="centered")
-st.title("🎬movie recommendation system")
-st.write("find movies similar to your favourite using machine learning!")
+st.title("🎬Movie Recommendation Algorithm")
+st.write("Find movies similar to your favourite!")
 
 @st.cache_data
 def load_and_prep_data():
@@ -87,7 +87,7 @@ def get_recommendations(title):
 #steramlit ui#
 
 movie_list = df['title'].values
-selected_movie = st.selectbox("type or select a movie from the dropdown:",movie_list)
+selected_movie = st.selectbox("Type or select a movie from the dropdown:",movie_list)
 
 if st.button("get recommendations"):
     recommendations = get_recommendations(selected_movie)
