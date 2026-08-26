@@ -93,7 +93,7 @@ if st.button("get recommendations"):
     recommendations = get_recommendations(selected_movie)
     
     if recommendations:
-        st.subheader(f"top 10 movies similar to '{selected_movie}':")
+        st.subheader(f"Top 10 movies similar to '{selected_movie}':")
         for i,movie in enumerate(recommendations, 1):
             st.markdown(f"**{i}.{movie}**")
     else:
