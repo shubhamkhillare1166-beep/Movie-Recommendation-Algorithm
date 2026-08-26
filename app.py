@@ -95,7 +95,7 @@ if st.button("get recommendations"):
     if recommendations:
         st.subheader(f"top 10 movies similar to '{selected_movie}':")
         for i,movie in enumerate(recommendations, 1):
-            st.markdown(f"**{i}.**{movie}")
+            st.markdown(f"**{i}.{movie}**")
     else:
         st.error("movie not found in dataset!")
 
