@@ -26,8 +26,8 @@ st.write("similar to your favourite")
 def load_and_prep_data():
     
     print("loading movie datasets...")
-    movies = pd.read_csv("data/tmdb_5000_movies.zip")
-    credits = pd.read_csv("data/tmdb_5000_credits.zip")
+    movies = pd.read_csv("tmdb_5000_movies.zip")
+    credits = pd.read_csv("tmdb_5000_credits.zip")
     
     credits = credits.drop(columns=['title'])
     df = movies.merge(credits, left_on='id', right_on='movie_id')
