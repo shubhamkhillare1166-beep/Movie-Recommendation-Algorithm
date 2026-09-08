@@ -6,28 +6,28 @@ from sklearn.metrics.pairwise import cosine_similarity
 import requests
 
 def fetch_poster(movie_id):
-     url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key=a7b930e0c2a2cc0f17a117784d73414f&language=en-US"
+    url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key=a7b930e0c2a2cc0f17a117784d73414f&language=en-US"
     try:
         response = requests.get(url,timeout=3)
-        if response.stetus_code == 200:
+        if response.status_code == 200:
             data = response.json()
             poster_path = data.get('poster_path')
             if poster_path:
                 return "https://image.tmdb.org/t/p/w500/" + poster_path
-    except.Exception:
+    except Exception:
         pass
     return "https://via.placeholder.com/500x750?text=No+Poster"
 
 st.set_page_config(page_title="Netflix recommender",page_icon="🎬",layout="wide")
 st.title("🎬Find movies")
-st.write("**similar to your favourite!**")
+st.write("similar to your favourite")
 
 @st.cache_data
 def load_and_prep_data():
     
     print("loading movie datasets...")
-    movies = pd.read_csv("tmdb_5000_movies.zip")
-    credits = pd.read_csv("tmdb_5000_credits.zip")
+    movies = pd.read_csv("data/tmdb_5000_movies.zip")
+    credits = pd.read_csv("data/tmdb_5000_credits.zip")
     
     credits = credits.drop(columns=['title'])
     df = movies.merge(credits, left_on='id', right_on='movie_id')
@@ -88,33 +88,32 @@ def get_recommendations(title):
     
     if matching_titles.empty:
         return [], []
-    
     exact_title = matching_titles.iloc[0]
     idx = indices[exact_title]
     
     sim_scores = list(enumerate(cosine_sim[idx]))
     sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)[1:11]
-
+    
     movie_names = []
     movie_posters = []
-
+    
     for i in sim_scores:
         movie_id = df.iloc[i[0]]['id']
-        movie_names.append(df.iloc[i[0]]['title']
+        movie_names.append(df.iloc[i[0]]['title'])
         movie_posters.append(fetch_poster(movie_id))
-                          
-    return movie_names , movie_posters
-
+        
+    return movie_names , movie_posters    
+        
 #steramlit ui#
 
 movie_list = df['title'].values
-selected_movie = st.selectbox("Type or select a movie from the dropdown:",movie_list)
+selected_movie = st.selectbox("type or select a movie from the dropdown:",movie_list)
 
 if st.button("get recommendations"):
-    name , posters = get_recommendations(selected_movie)
+    names , posters = get_recommendations(selected_movie)
     
     if names:
-        st.subheader(f"Top 10 movies similar to '{selected_movie}':")
+        st.subheader(f"top 10 movies similar to '{selected_movie}':")
         cols = st.columns(5)
         for i in range(5):
             with cols[i]:
@@ -122,3 +121,4 @@ if st.button("get recommendations"):
                 st.image(posters[i])
     else:
         st.error("movie not found in dataset!")
+
